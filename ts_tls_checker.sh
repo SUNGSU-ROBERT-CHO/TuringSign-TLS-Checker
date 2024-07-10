@@ -44,11 +44,14 @@ function check_supported_tls_version() {
             return 0
         fi
 
-        if [[ $result != *"no protocols"* ]]; then
-           
-            if [[ $result == *"CONNECTED"* ]]; then
-                supported_tls_version+=("$version")
-            fi
+        if [[ $result == *"no protocols"* ]]; then
+            continue
+        elif [[ "$result" == *"Cipher is (NONE)"* ]]; then
+            continue
+        fi
+
+        if [[ $result == *"CONNECTED"* ]]; then
+            supported_tls_version+=("$version")
         fi
     done
     return 1
